@@ -156,7 +156,10 @@ class DayView extends CheckedTextView {
             setTextColor(getTextColors().getColorForState(
                     new int[]{-android.R.attr.state_enabled}, Color.GRAY));
         }
-        setVisibility(shouldBeVisible ? View.VISIBLE : View.INVISIBLE);
+        if (!shouldBeVisible) {
+            setTextColor(Color.parseColor("#aaaaaa"));
+        }
+        setVisibility(View.VISIBLE);
     }
 
     protected void setupSelection(@ShowOtherDates int showOtherDates, boolean inRange, boolean inMonth) {
@@ -265,18 +268,24 @@ class DayView extends CheckedTextView {
     }
 
     private void calculateBounds(int width, int height) {
-        final int radius = Math.min(height, width);
-        final int offset = Math.abs(height - width) / 2;
+        final int radius = Math.max(height, width) / 2;
+
 
         // Lollipop platform bug. Circle drawable offset needs to be half of normal offset
-        final int circleOffset = Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP ? offset / 2 : offset;
+        final int horiOffset = (width  - radius);
+        final int vertOffset = (height  - radius);
+        final int horiCicleOffset = Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP ? (width  - radius) / 4 : (width - radius) / 2;
+        final int vertCicleOffset = Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP ? (height  - radius) / 4 : (height - radius) / 2;
+
 
         if (width >= height) {
-            tempRect.set(offset, 0, radius + offset, height);
-            circleDrawableRect.set(circleOffset, 0, radius + circleOffset, height);
+            tempRect.set(horiOffset , vertOffset, radius + horiOffset, radius + vertOffset);
+            circleDrawableRect.set(horiCicleOffset, vertCicleOffset, radius + horiCicleOffset, radius + vertCicleOffset);
         } else {
-            tempRect.set(0, offset, width, radius + offset);
-            circleDrawableRect.set(0, circleOffset, width, radius + circleOffset);
+            tempRect.set(horiOffset, vertOffset, radius + horiOffset, radius + vertOffset);
+            circleDrawableRect.set(horiCicleOffset, vertCicleOffset, radius + horiCicleOffset, radius + vertCicleOffset);
+
+
         }
     }
 }
