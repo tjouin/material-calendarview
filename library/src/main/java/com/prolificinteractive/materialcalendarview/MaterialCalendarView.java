@@ -1452,9 +1452,15 @@ public class MaterialCalendarView extends ViewGroup {
             break;
             default:
             case SELECTION_MODE_SINGLE: {
-                adapter.clearSelections();
-                adapter.setDateSelected(date, true);
-                dispatchOnDateSelected(date, true);
+                if (adapter.getSelectedDates().contains(date)) {
+                    adapter.clearSelections();
+                    dispatchOnDateSelected(null, true);
+                } else {
+                    adapter.clearSelections();
+                    adapter.setDateSelected(date, true);
+                    dispatchOnDateSelected(date, true);
+                }
+
             }
             break;
         }
