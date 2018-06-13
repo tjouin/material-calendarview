@@ -14,6 +14,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -200,6 +201,11 @@ public class MaterialCalendarView extends ViewGroup {
     private final ViewPager.OnPageChangeListener pageChangeListener = new ViewPager.OnPageChangeListener() {
         @Override
         public void onPageSelected(int position) {
+            // YGW Modification
+            Log.d("YGWLib", "Week swapped");
+            clearSelection();
+            dispatchOnDateSelected(getCurrentDate(), false);
+
             titleChanger.setPreviousMonth(currentMonth);
             currentMonth = adapter.getItem(position);
             updateUi();
@@ -1460,7 +1466,6 @@ public class MaterialCalendarView extends ViewGroup {
                     adapter.setDateSelected(date, true);
                     dispatchOnDateSelected(date, true);
                 }
-
             }
             break;
         }

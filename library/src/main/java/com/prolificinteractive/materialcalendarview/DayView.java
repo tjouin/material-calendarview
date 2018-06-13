@@ -267,6 +267,7 @@ class DayView extends CheckedTextView {
         regenerateBackground();
     }
 
+    // YGW Changement
     private void calculateBounds(int width, int height) {
         final int radius = Math.max(height, width) / 2;
 
